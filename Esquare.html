@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>E square Software House | Smart Solutions. Strong Code.</title>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Library for smooth scroll animations -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: #ffffff;
+            color: #0a0a0a;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Dark Mode Styles */
+        body.dark {
+            background: #0b0e17;
+            color: #f0f4fe;
+        }
+        body.dark .navbar,
+        body.dark .footer {
+            background: rgba(15, 17, 25, 0.96);
+            border-color: #1f273f;
+        }
+        body.dark .service-card,
+        body.dark .feature-box,
+        body.dark .contact-form-container,
+        body.dark .contact-info-card {
+            background: #131825;
+            color: #eef2ff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        body.dark .service-card:hover {
+            background: #1a1f2e;
+        }
+        body.dark .cta-btn,
+        body.dark .submit-btn {
+            background: #1e88e5;
+        }
+        body.dark input, body.dark textarea {
+            background: #1e2335;
+            border-color: #2d354f;
+            color: white;
+        }
+        body.dark .hero {
+            background: linear-gradient(135deg, #030712 0%, #0f172a 100%);
+        }
+        body.dark .about-img-placeholder {
+            background: #131825;
+        }
+
+        /* Loading Animation */
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0f1c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+        .loader {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(30,136,229,0.2);
+            border-top: 5px solid #1e88e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Sticky Navbar */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(16px);
+            padding: 0.9rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(30,136,229,0.2);
+        }
+        .logo h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0a2540, #1e88e5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .logo p {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: #1e88e5;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links li a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: 500;
+            transition: 0.2s;
+            position: relative;
+        }
+        .nav-links li a:hover {
+            color: #1e88e5;
+        }
+        .dark-toggle {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: inherit;
+            margin-left: 1rem;
+            transition: transform 0.2s;
+        }
+        .dark-toggle:hover {
+            transform: scale(1.1);
+        }
+        .hamburger {
+            display: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+
+        .cta-btn {
+            background: #0a2540;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+        }
+        .cta-btn:hover {
+            background: #1e88e5;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(30,136,229,0.3);
+        }
+        .submit-btn {
+            background: #0a2540;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .submit-btn:hover {
+            background: #1e88e5;
+            transform: scale(1.02);
+        }
+
+        /* Hero with background image */
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(135deg, rgba(10,37,64,0.85), rgba(30,136,229,0.75)), url('https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1600');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .hero-content h1 span {
+            background: linear-gradient(120deg, #ffffff, #a0d6ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .hero-content p {
+            font-size: 1.3rem;
+            margin: 1.5rem 0;
+            max-width: 700px;
+            color: #f0f9ff;
+        }
+
+        section {
+            padding: 5rem 6%;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .section-title:after {
+            content: '';
+            width: 70px;
+            height: 4px;
+            background: #1e88e5;
+            display: block;
+            margin: 0.8rem auto 0;
+            border-radius: 4px;
+        }
+
+        /* About with image */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 3rem;
+        }
+        .about-text p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        .about-image img {
+            width: 100%;
+            border-radius: 32px;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.15);
+            transition: transform 0.4s ease;
+        }
+        .about-image img:hover {
+            transform: scale(1.02);
+        }
+
+        /* Services Cards - Single service now displayed prominently */
+        .services-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .service-card {
+            background: #f8fafc;
+            padding: 2.5rem 2rem;
+            border-radius: 32px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            cursor: default;
+            width: 100%;
+        }
+        .service-card i {
+            font-size: 3.5rem;
+            color: #1e88e5;
+            margin-bottom: 1.2rem;
+        }
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .service-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .service-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: #ffffff;
+            box-shadow: 0 30px 45px -12px rgba(30,136,229,0.3);
+        }
+
+        /* Why Choose Us */
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-box {
+            background: #f9f9ff;
+            border-radius: 30px;
+            padding: 2rem 2rem;
+            flex: 1 1 200px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        .feature-box i {
+            font-size: 2.5rem;
+            color: #1e88e5;
+            margin-bottom: 1rem;
+        }
+        .counter {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        /* Contact */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: space-between;
+        }
+        .contact-form-container {
+            flex: 1.2;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 32px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .contact-info-card {
+            flex: 0.8;
+            background: #f8fafc;
+            border-radius: 32px;
+            padding: 2rem;
+        }
+        .contact-info-card i {
+            width: 40px;
+            color: #1e88e5;
+            margin-right: 1rem;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .social-icons a {
+            color: #0a2540;
+            font-size: 1.8rem;
+            transition: 0.2s;
+        }
+        body.dark .social-icons a {
+            color: #eef2ff;
+        }
+        .social-icons a:hover {
+            color: #1e88e5;
+            transform: translateY(-4px);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 28px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        textarea {
+            border-radius: 24px;
+            resize: vertical;
+        }
+
+        .footer {
+            background: #f1f5f9;
+            padding: 2rem 6%;
+            text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 850px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: inherit;
+                text-align: center;
+                padding: 1rem 0;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .hamburger {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-wrapper {
+                flex-direction: column;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .services-grid {
+                max-width: 100%;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        /* additional polish */
+        .service-card {
+            border: 1px solid rgba(30,136,229,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div id="loader" class="loader-wrapper">
+    <div class="loader"></div>
+</div>
+
+<nav class="navbar" id="navbar">
+    <div class="logo">
+        <h1>E square</h1>
+        <p>Smart solution. strong code</p>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars"></i>
+    </div>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#whyus">Why Choose Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="dark-toggle" id="darkModeToggle"><i class="fas fa-moon"></i></button>
+</nav>
+
+<main>
+    <!-- Hero Section with BG Image -->
+    <section id="home" class="hero" data-aos="fade-up">
+        <div class="hero-content">
+            <h1 data-aos="zoom-in">Smart Solutions. <span>Strong Code.</span></h1>
+            <p data-aos="fade-up" data-aos-delay="200">We build modern, fast, and user-friendly digital solutions.</p>
+            <a href="#contact" class="cta-btn" data-aos="fade-up" data-aos-delay="400">Get Started <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- About Us with real image -->
+    <section id="about" data-aos="fade-right">
+        <div class="section-title">About Us</div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>At E Square Software House, we create modern, fast, and user-friendly digital solutions. We help businesses grow through websites, software, and IT services. Our team blends creativity and technology to deliver products that inspire and perform. From startups to enterprises, we’re your tech partner. With a passion for innovation and precision, we turn ideas into powerful realities. We focus on high-quality web development and custom software that drives real results.</p>
+            </div>
+            <div class="about-image" data-aos="fade-left">
+                <img src="https://images.pexels.com/photos/3861964/pexels-photo-3861964.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Team working on software development">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section: Only Website Development -->
+    <section id="services" style="background: rgba(30,136,229,0.02);">
+        <div class="section-title">Our Service</div>
+        <div class="services-grid">
+            <div class="service-card" data-aos="flip-up">
+                <i class="fas fa-globe"></i>
+                <h3>Website Development</h3>
+                <p>Custom responsive websites, CMS integration, high-performance web applications, and modern front-end experiences. We craft digital platforms that scale with your business and engage users seamlessly.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; font-size: 0.95rem; opacity: 0.8;">
+            <i class="fas fa-code"></i> Tailored solutions for every industry
+        </div>
+    </section>
+
+    <!-- Why Choose Us with Counters & illustration style -->
+    <section id="whyus">
+        <div class="section-title">Why Choose Us</div>
+        <div class="features-grid">
+            <div class="feature-box" data-aos="zoom-in"><i class="fas fa-users"></i><div class="counter" data-target="50">0</div><h3>Professional Team</h3><p>Experts in latest tech</p></div>
+            <div class="feature-box" data-aos="zoom-in" data-aos-delay="100"><i class="fas fa-rocket"></i><div class="counter" data-target="120">0</div><h3>Fast Delivery</h3><p>Projects delivered ahead</p></div>
+            <div class="feature-box" data-aos="zoom-in" data-aos-delay="200"><i class="fas fa-tag"></i><div class="counter" data-target="30">0</div><h3>Affordable Price</h3><p>Competitive & transparent</p></div>
+            <div class="feature-box" data-aos="zoom-in" data-aos-delay="300"><i class="fas fa-headset"></i><div class="counter" data-target="100">0</div><h3>Customer Support</h3><p>24/7 dedicated support</p></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background: rgba(30,136,229,0.02);">
+        <div class="section-title">Contact Us</div>
+        <div class="contact-wrapper">
+            <div class="contact-form-container" data-aos="fade-right">
+                <h3>Send us a message</h3>
+                <form id="contactForm">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                    <input type="email" id="email" placeholder="Email Address" required>
+                    <textarea rows="4" id="message" placeholder="Tell us about your project..."></textarea>
+                    <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+                </form>
+                <div id="formFeedback" style="margin-top:1rem;"></div>
+            </div>
+            <div class="contact-info-card" data-aos="fade-left">
+                <h3>Get in touch</h3>
+                <p><i class="fab fa-instagram"></i> Instagram: Esquare_Web</p>
+                <p><i class="fab fa-facebook"></i> Facebook: Esquare_Web</p>
+                <p><i class="fas fa-envelope"></i> Email: esquare01@gmail.com</p>
+                <p><i class="fab fa-whatsapp"></i> Phone/WhatsApp: 0309-3816587</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <!-- small illustration -->
+                <div style="text-align:center; margin-top: 1.5rem;">
+                    <i class="fas fa-laptop-code" style="font-size: 3rem; color:#1e88e580;"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <p>&copy; 2025 E square Software House — Smart solution. strong code. All rights reserved.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Loading animation
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 600);
+    });
+
+    // AOS init
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
+        easing: 'ease-out-quad'
+    });
+
+    // Sticky navbar shadow
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+        if(window.scrollY > 20) {
+            navbar.style.boxShadow = "0 10px 30px rgba(0,0,0,0.1)";
+        } else {
+            navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.05)";
+        }
+    });
+
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+        });
+    });
+
+    // Dark Mode
+    const darkToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    if(localStorage.getItem('theme') === 'dark') {
+        body.classList.add('dark');
+        darkToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    } else {
+        darkToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    }
+    darkToggle.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        if(body.classList.contains('dark')) {
+            localStorage.setItem('theme', 'dark');
+            darkToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('theme', 'light');
+            darkToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+
+    // Animated Counters
+    const counters = document.querySelectorAll('.counter');
+    const startCounting = (counter) => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        let current = 0;
+        const increment = target / 55;
+        const updateCounter = () => {
+            current += increment;
+            if(current < target) {
+                counter.innerText = Math.ceil(current);
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.innerText = target;
+            }
+        };
+        updateCounter();
+    };
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                startCounting(entry.target);
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+    counters.forEach(counter => observer.observe(counter));
+
+    // Contact form handling
+    const contactForm = document.getElementById('contactForm');
+    const feedbackDiv = document.getElementById('formFeedback');
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if(!name || !email || !message) {
+            feedbackDiv.innerHTML = '<p style="color: #e53e3e;">❌ Please fill all fields.</p>';
+            setTimeout(() => feedbackDiv.innerHTML = '', 2500);
+            return;
+        }
+        feedbackDiv.innerHTML = '<p style="color:#1e88e5;">✅ Thanks ' + name + '! We\'ll get back to you soon.</p>';
+        contactForm.reset();
+        setTimeout(() => feedbackDiv.innerHTML = '', 4000);
+    });
+
+    // Smooth scroll for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            if(targetId === "#" || targetId === "") return;
+            const targetElem = document.querySelector(targetId);
+            if(targetElem) {
+                e.preventDefault();
+                targetElem.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+</script>
+</body>
+</html>
